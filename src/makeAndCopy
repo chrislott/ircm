@@ -1,0 +1,3 @@
+#/bin/sh
+make
+scp -r iRCm.app root@192.168.0.108:/Applications/
