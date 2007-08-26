@@ -164,6 +164,11 @@ static ServerManager *servMgr;
 	[[servers objectAtIndex:currentServer] sendCurrentChannelPM: message];
 }
 
+- (void)sendRawMessage:(NSString *)message forServer:(int)aServer
+{
+	NSString *withCRLF = [NSString stringWithFormat:@"%@\r\n\r\n", message];
+	[[servers objectAtIndex:aServer] sendMessage:withCRLF];
+}
 
 - (void)setServers:(NSMutableArray *)aServers
 {
@@ -196,6 +201,11 @@ static ServerManager *servMgr;
 - (void)setNickname:(NSString *)aNick forServer:(int)aServer
 {
 	[[servers objectAtIndex:aServer] setNickname:aNick];
+	if([[servers objectAtIndex:aServer] isConnected] == YES)
+	{
+		NSString *compiledMsg = [NSString stringWithFormat:@"NICK %@\r\n\r\n", aNick];
+		[[servers objectAtIndex:aServer] sendMessage:compiledMsg];
+	}
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMServersDidChangeNotification" object:self];
 }
 

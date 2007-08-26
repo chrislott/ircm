@@ -59,7 +59,31 @@
   {
 	//they pressed return! zomg!
 	NSLog(@"WE DETECTED U PRESSED RETURN!!!");
-	[[[iRCMobileApp sharedInstance] channelView] sendMessage: [[self text] copy] ];
+	//do some simple parsing for /join or /part and stuff
+	
+	NSArray *spacedItems = [ [[self text] copy] componentsSeparatedByString:@" "];
+	int spacedItemCount = [spacedItems count];
+	//NSLog(@"item count: %d", spacedItemCount);
+	if(spacedItemCount > 0)
+	{
+		if([[spacedItems objectAtIndex:0] compare: @"/join"] == 0)
+		{
+			[[ServerManager sharedServerManager] tryToJoin: [spacedItems objectAtIndex:1] forServer: [[ServerManager sharedServerManager] currentServer]];
+		} 
+		else if([[spacedItems objectAtIndex:0] compare: @"/nick"] == 0)
+		{
+			[[ServerManager sharedServerManager] setNickname: [spacedItems objectAtIndex:1] forServer: [[ServerManager sharedServerManager] currentServer]];
+		}
+		else if([[spacedItems objectAtIndex:0] compare: @"/raw"] == 0)
+		{
+			[[ServerManager sharedServerManager] sendRawMessage:[[self text] substringFromIndex:4] forServer: [[ServerManager sharedServerManager] currentServer]];
+		}
+		else
+		{
+			[[[iRCMobileApp sharedInstance] channelView] sendMessage: [[self text] copy] ];
+		}
+	}
+	
 	[self setText: @""];
 	return NO;
   }	
@@ -84,11 +108,13 @@
     _controlKeyMode = NO;
   }*/
  
+ /*
   NSLog(@"got string from char: %c", cmd_char);
   NSString *newString = [[self text] stringByAppendingString:[NSString stringWithFormat:@"%c", cmd_char] ];
   NSLog(@"appended string to old string, here's the new one: %@", newString);
   [self setText:[newString copy]];
   NSLog(@"now we're done adding it to the text field");
+  */
   //if (write(_fd, &cmd_char, 1) == -1) {
   //  perror("write");
   //  exit(1);
@@ -96,7 +122,7 @@
   
   
   // See if the shell echo'd back what we just wrote
-  return NO;
+  return YES;
 }
 
 - (int)writeData:(const char*)data length:(unsigned int)length

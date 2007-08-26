@@ -64,7 +64,7 @@ static iRCMobileApp *sharedInstance;
 	return prefView;
 }
 
-- (UIView *)channelView
+- (ChannelView *)channelView
 {
 	return channelView;
 }

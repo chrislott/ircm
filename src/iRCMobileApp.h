@@ -38,7 +38,7 @@
 - (iRCMKeyboard *)keyboard;
 - (UIView *)getServerList;
 - (UIView *)prefView;
-- (UIView *)channelView;
+- (ChannelView *)channelView;
 - (void)transitionToChannelViewWithTransition:(int) trans;
 - (void)transitionToServerViewWithTransition:(int) trans;
 - (void)transitionToServerListWithTransition:(int) trans;

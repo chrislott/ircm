@@ -30,7 +30,7 @@
 		channelBar = [[UINavigationBar alloc] init];
 		[channelBar setFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, 35.0f)];
 		[channelBar showLeftButton:@"Back" withStyle:1 rightButton:@"Users" withStyle:0];
-		[channelBar setBarStyle: 5];	
+		[channelBar setBarStyle: 2];	
 		[channelBar setDelegate: self];
 				
 		//setup message table
@@ -85,7 +85,6 @@
 		
 		[self setBackgroundColor:CGColorCreate(colorSpace, whiteComponents)];
 		
-		[self addSubview:chanKeyboard];
 		
 		[self addSubview:channelBar];
 		[self addSubview:messageTable];
@@ -93,6 +92,7 @@
 		[self addSubview:table];
 				
 
+		[self addSubview:chanKeyboard];
 		[self becomeFirstResponder];
 		
 		
@@ -110,6 +110,8 @@
 	
 	NSString *nameForChannel = [[ServerManager sharedServerManager] getCurrentChannelName];
 	[channelBar setPrompt: nameForChannel];
+	//[channelBar setTitle: nameForChannel];
+
 	//[title setText: nameForChannel];
 	//get last message received
 	/*

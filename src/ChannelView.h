@@ -42,6 +42,7 @@
 	MessageTextView *textField;
 }
 
+- (void)sendMessage:(NSString *)messageToSend;
 - (id)initWithFrame: (CGRect)frame;
 - (void)dealloc;
 - (void)drawRect:(CGRect)frame;
