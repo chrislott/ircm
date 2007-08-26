@@ -24,7 +24,13 @@
 		//Colors
 		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
 		float whiteComponents[4] = {1, 1, 1, 1};
-		//float transparentComponents[4] = {0, 0, 0, 0};
+		float transparentComponents[4] = {0, 0, 0, 0};
+		
+		NSBundle *bundle = [NSBundle mainBundle];
+		NSString *backgroundPath = [bundle pathForResource:@"textbar" ofType:@"png"];
+		UIImage *theDefault = [[UIImage alloc]initWithContentsOfFile:backgroundPath];
+		UIImageView *workaround = [[UIImageView alloc] init];
+		[workaround setImage:theDefault];
 		
 		//setup nav bar
 		channelBar = [[UINavigationBar alloc] init];
@@ -35,7 +41,7 @@
 				
 		//setup message table
 		
-		messageTable = [[iRCMUITable alloc] initWithFrame:CGRectMake(frame.origin.x, 35.0f, frame.size.width, frame.size.height - 175.0f - 105.0f)];
+		messageTable = [[iRCMUITable alloc] initWithFrame:CGRectMake(frame.origin.x, 35.0f, frame.size.width, frame.size.height - 180.0f - 105.0f)];
 		UITableColumn *col = [[UITableColumn alloc] initWithTitle:@"Messages" identifier:@"messages" width:frame.size.width];
 		[messageTable addTableColumn:col];
 		[messageTable setSeparatorStyle:0];
@@ -64,14 +70,17 @@
 		[self addSubview:_msgBar];			
 		*/
 
-		ServerPrefTable *table = [[ServerPrefTable alloc] initWithFrame:CGRectMake(0.0f,  frame.size.height - 245.0f, 320.0f, 35.0f)];
+		ServerPrefTable *table = [[ServerPrefTable alloc] initWithFrame:CGRectMake(0.0f,  frame.size.height - 250.0f, 320.0f, 40.0f)];
 		
 		
 		textField = [[MessageTextView alloc] initWithFrame:CGRectMake(5.0f,  5.0f, 310.0f, 25.0f)];
 		[textField setTextSize:15.0f];
 		[textField setText: @"Enter your text here."];
+		[textField setBackgroundColor:CGColorCreate(colorSpace, transparentComponents)];
+		
+		[table addSubview:workaround];
 		[table addSubview: textField];
-	
+		
 		//get keyboard
 		//chanKeyboard = [[iRCMobileApp sharedInstance] keyboard];
 		//if (!chanKeyboard)  

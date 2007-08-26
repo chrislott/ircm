@@ -10,6 +10,7 @@ iRCMobileApp: main.o iRCMobileApp.o  IRCServer.o ServerPrefsView.o ServerPrefTab
 	$(LD) $(LDFLAGS) -o $@ $^
 	cp Default.png ./iRCm.app/
 	cp Background.png ./iRCm.app/
+	cp textbar.png ./iRCm.app/
 	cp icon.png ./iRCm.app/
 	cp Info.plist ./iRCm.app/
 	cp iRCMobileApp ./iRCm.app/
