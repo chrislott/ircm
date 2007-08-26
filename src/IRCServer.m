@@ -20,8 +20,8 @@
 {	
 	[self setDescription:@"OSX86 Server"];
 	[self setHostname:@"irc.osx86.hu"];
-	[self setNickname:@"pogiphone"];
-	[self setUsername:@"pogi"];
+	[self setNickname:@"yourNickHere"];
+	[self setUsername:@"iRCm"];
 	[self setPort:6667];
 	_OutgoingData = @"";
 	_InputBuffer = @"";
@@ -421,6 +421,16 @@
 		NSLog(@"im connected...so lets try joining");
 		[self sendMessage:[NSString stringWithFormat:@"JOIN %@\r\n\r\n", channelToJoin]];
 	}
+}
+
+- (void)sendCurrentChannelPM:(NSString *)message
+{
+	NSLog(@"%i", currentChannel);
+	NSString *currentChan = [[channels objectAtIndex: currentChannel] name];
+	NSLog(@"currentChannel : %@", currentChan);
+	[self sendMessage:[NSString stringWithFormat:@"PRIVMSG %@ :%@\r\n\r\n", currentChan, message]];
+	//make it show up in the channel window
+	[[channels objectAtIndex:currentChannel] newMessage: message from:nickname];
 }
 
 - (void)addNewChannel:(Channel *)newChannel

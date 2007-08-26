@@ -72,7 +72,6 @@ static iRCMobileApp *sharedInstance;
 {
 	[transitionView transition:trans toView:channelView];
 	
-	[[iRCMobileApp sharedInstance] setKeyboardIsOut: NO];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMChannelDidChangeNotification" object:nil];
 }
 
@@ -80,7 +79,6 @@ static iRCMobileApp *sharedInstance;
 {
 	[transitionView transition:trans toView:serverView];
 	
-	[[iRCMobileApp sharedInstance] setKeyboardIsOut: NO];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMChannelDidChangeNotification" object:nil];
 }
 
@@ -111,7 +109,16 @@ static iRCMobileApp *sharedInstance;
 		{
 			//preferences
 			NSLog(@"button 1");
-			[self showServerPrefs:[serverTable selectedRow]];
+			@try {
+				 [self showServerPrefs:[serverTable selectedRow]];
+			}
+			@catch ( NSException *e ) {
+				 //dealWithTheException;
+			}
+			@finally {
+				 //cleanUp;
+			}
+
 		}
 		
 	} else
@@ -193,12 +200,12 @@ static iRCMobileApp *sharedInstance;
 		UITextLabel *descriptionLabel = [[UITextLabel alloc] initWithFrame:CGRectMake(5.0f, 3.0f, 210.0f, 40.0f)];
 		[descriptionLabel setText:@"Add Server..."];
 		[descriptionLabel setWrapsText:YES];
-		[descriptionLabel setBackgroundColor:CGColorCreate(colorSpace, grayComponents)];
+		[descriptionLabel setColor:CGColorCreate(colorSpace, grayComponents)];
 		[descriptionLabel setBackgroundColor:CGColorCreate(colorSpace, transparentComponents)];
 
 		UITableCell *cell = [[UITableCell alloc] init];
 		[cell addSubview:descriptionLabel];
-		[cell setShowDisclosure:YES];
+		[cell setShowDisclosure:NO];
 		return cell;
 	}
 }
@@ -336,9 +343,14 @@ static iRCMobileApp *sharedInstance;
 	[transitionView transition:1 toView:serverListView];
 	
 	mainKeyboard =  [[iRCMKeyboard alloc] initWithFrame:CGRectMake(0.0f, 480.0, 320.0f, 480.0f)];
-
-	
+	//[mainKeyboard setTapDelegate:this];
 }
+
+- (void)setKeyboard: (iRCMKeyboard *)keybd
+{
+	mainKeyboard = keybd;
+}
+
 
 
 

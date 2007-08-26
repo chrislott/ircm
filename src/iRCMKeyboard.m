@@ -52,6 +52,8 @@
 
 - (BOOL)toggleKeyboardForView:(UIView *)view
 {
+
+	NSLog(@"inside toggle keyboard");
 	iRCMobileApp *iRCM = [iRCMobileApp sharedInstance];
 	
     ([iRCM keyboardIsOut]) ? [self hideKeyboardForView:view] : [self showKeyboardForView:view];

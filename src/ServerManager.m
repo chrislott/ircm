@@ -158,6 +158,13 @@ static ServerManager *servMgr;
 {
 	[[servers objectAtIndex:aServer] joinChannel: aChannel];
 }
+
+- (void)sendCurrentChannelPM:(NSString *)message
+{
+	[[servers objectAtIndex:currentServer] sendCurrentChannelPM: message];
+}
+
+
 - (void)setServers:(NSMutableArray *)aServers
 {
 	aServers = [aServers mutableCopy];
@@ -203,6 +210,7 @@ static ServerManager *servMgr;
 {
 	NSLog(@"current channel set to: %i, %@", aChannel, [[servers objectAtIndex:currentServer] getNameForChannel: aChannel]);
 	currentChannel = aChannel;
+	[[servers objectAtIndex:currentServer] setCurrentChannel: aChannel];
 }
 
 - (int)currentChannel

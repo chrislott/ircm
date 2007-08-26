@@ -37,6 +37,7 @@
 - (void)handleInputStreamEvent:(NSStreamEvent)eventCode;
 - (void)readBytes;
 - (void)sendMessage:(NSString *)message;
+- (void)sendCurrentChannelPM:(NSString *)message;
 - (NSString *)getLastDataReceived;
 
 - (void)ParseString:(NSString *)longString;

@@ -6,10 +6,8 @@ CFLAGS = -Wall
 
 all:	iRCMobileApp
 
-iRCMobileApp: main.o iRCMobileApp.o  IRCServer.o ServerPrefsView.o ServerPrefTable.o iRCMTextView.o iRCMKeyboard.o ServerManager.o Channel.o ServerView.o ChannelView.o iRCMUITable.o
+iRCMobileApp: main.o iRCMobileApp.o  IRCServer.o ServerPrefsView.o ServerPrefTable.o iRCMTextView.o iRCMKeyboard.o ServerManager.o Channel.o ServerView.o ChannelView.o iRCMUITable.o MessageTextView.o
 	$(LD) $(LDFLAGS) -o $@ $^
-	rm -fr iRCm.app
-	mkdir iRCm.app
 	cp Default.png ./iRCm.app/
 	cp Background.png ./iRCm.app/
 	cp icon.png ./iRCm.app/

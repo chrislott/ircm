@@ -1,4 +1,4 @@
-//
+ //
 //  ServerPrefsView.m
 //  
 //
@@ -7,6 +7,7 @@
 //
 
 #import "iRCMobileApp.h"
+#import "ServerPrefTable.h"
 #import "ChannelView.h"
 #import <UIKit/UIPreferencesTableCell.h>
 #import <UIKit/UIPreferencesTextTableCell.h>
@@ -27,14 +28,14 @@
 		
 		//setup nav bar
 		channelBar = [[UINavigationBar alloc] init];
-		[channelBar setFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, 70.0f)];
+		[channelBar setFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, 35.0f)];
 		[channelBar showLeftButton:@"Back" withStyle:1 rightButton:@"Users" withStyle:0];
-		[channelBar setBarStyle: 2];	
-				[channelBar setDelegate: self];
+		[channelBar setBarStyle: 5];	
+		[channelBar setDelegate: self];
 				
 		//setup message table
 		
-		messageTable = [[iRCMUITable alloc] initWithFrame:CGRectMake(frame.origin.x, 90.0f, frame.size.width, frame.size.height - 90.0f)];
+		messageTable = [[iRCMUITable alloc] initWithFrame:CGRectMake(frame.origin.x, 35.0f, frame.size.width, frame.size.height - 175.0f - 105.0f)];
 		UITableColumn *col = [[UITableColumn alloc] initWithTitle:@"Messages" identifier:@"messages" width:frame.size.width];
 		[messageTable addTableColumn:col];
 		[messageTable setSeparatorStyle:0];
@@ -43,6 +44,11 @@
 		[messageTable reloadData]; 
 		[messageTable setTapDelegate:self];
 		
+				
+		//title = [[UITextLabel alloc] init];
+		//[title setColor:CGColorCreate(colorSpace, whiteComponents)];
+		
+		//[channelBar addSubview: title];
 		/*
 		//stolen from apolloim:
 		convoView = [[UITextView alloc]initWithFrame:CGRectMake(frame.origin.x,frame.origin.y, frame.size.width, 380.0f)];
@@ -58,24 +64,37 @@
 		[self addSubview:_msgBar];			
 		*/
 
-
+		ServerPrefTable *table = [[ServerPrefTable alloc] initWithFrame:CGRectMake(0.0f,  frame.size.height - 245.0f, 320.0f, 35.0f)];
 		
-
+		
+		textField = [[MessageTextView alloc] initWithFrame:CGRectMake(5.0f,  5.0f, 310.0f, 25.0f)];
+		[textField setTextSize:15.0f];
+		[textField setText: @"Enter your text here."];
+		[table addSubview: textField];
+	
 		//get keyboard
-		keyboard = [[iRCMobileApp sharedInstance] keyboard];
-		if (!keyboard)  
-		{
-			NSLog(@"have to make new keyboard??");
-		}
+		//chanKeyboard = [[iRCMobileApp sharedInstance] keyboard];
+		//if (!chanKeyboard)  
+		//{
+			//chanKeyboard = [[iRCMobileApp sharedInstance] keyboard];
+			chanKeyboard  =  [[UIKeyboard alloc] initWithFrame:CGRectMake(0.0f, 245.0, 320.0f, 480.0f)];
+			//NSLog(@"have to make new keyboard??");
+			//[[iRCMobileApp sharedInstance] setKeyboard:chanKeyboard];
+		//}
 		
 		
 		[self setBackgroundColor:CGColorCreate(colorSpace, whiteComponents)];
 		
+		[self addSubview:chanKeyboard];
+		
 		[self addSubview:channelBar];
 		[self addSubview:messageTable];
 		
-		[self addSubview:keyboard];
+		[self addSubview:table];
 				
+
+		[self becomeFirstResponder];
+		
 		
 		//register self
 			[[NSNotificationCenter defaultCenter] addObserver:self
@@ -91,7 +110,7 @@
 	
 	NSString *nameForChannel = [[ServerManager sharedServerManager] getCurrentChannelName];
 	[channelBar setPrompt: nameForChannel];
-
+	//[title setText: nameForChannel];
 	//get last message received
 	/*
 	int row = [[ServerManager sharedServerManager] getCurrentChannelMessageCount] - 1;
@@ -130,7 +149,7 @@
     // Ignore mouse events that cause scrolling
   } else{
     // NSLog(@"MouseUp: not scrolling\n");
-	[[[iRCMobileApp sharedInstance] keyboard] showKeyboardForView:[[iRCMobileApp sharedInstance] channelView]];
+	//[[[iRCMobileApp sharedInstance] keyboard] showKeyboardForView:[[iRCMobileApp sharedInstance] channelView]];
   }
   [super mouseUp:fp8];
 }
@@ -180,6 +199,14 @@
 	NSLog(@"Channel View >> End rows in table result  : %i", rowcount);
 	return rowcount;
 } 
+
+- (void)sendMessage:(NSString *)messageToSend
+{
+	[[ServerManager sharedServerManager] sendCurrentChannelPM: messageToSend];
+}
+
+
+// keyboard shit
 
 
 

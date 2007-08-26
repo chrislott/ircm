@@ -50,7 +50,7 @@
 - (NSString *)getCurrentChannelMessage:(int)msgNum;
 - (int)getCurrentChannelMessageCount;
 - (NSString *)getCurrentChannelName;
-
+- (void)sendCurrentChannelPM:(NSString *)message;
 
 - (NSString *)getLastDataForServer:(int)aServer;
 - (NSString *)getDescriptionForServer:(int)aServer;

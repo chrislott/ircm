@@ -17,9 +17,11 @@
 #import <UIKit/UIPreferencesTable.h>
 #import <UIKit/UIPreferencesTableCell.h>
 #import <UIKit/UIPreferencesTextTableCell.h>
-
+#import <UIKit/UIKeyboard.h>
 #import "IRCServer.h"
+#import "iRCMKeyboard.h"
 #import "iRCMUITable.h"
+#import "MessageTextView.h"
 
 @interface ChannelView : UIView
 {
@@ -28,15 +30,17 @@
 	iRCMUITable *messageTable;
 	UITextView *messageView;
 	
-	iRCMKeyboard* keyboard;
+	//iRCMKeyboard* chanKeyboard;
 	
 	
+	iRCMKeyboard* chanKeyboard;
+	
+	UITextLabel *title;
 	UITextView* convoView;
-	UITextField* sendField;
+
 	UINavigationBar *_msgBar;
-
+	MessageTextView *textField;
 }
-
 
 - (id)initWithFrame: (CGRect)frame;
 - (void)dealloc;

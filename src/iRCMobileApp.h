@@ -33,6 +33,8 @@
 - (void)reloadData;
 - (BOOL)keyboardIsOut;
 - (void)setKeyboardIsOut:(BOOL)value;
+- (void)setKeyboard: (iRCMKeyboard *)keybd;
+
 - (iRCMKeyboard *)keyboard;
 - (UIView *)getServerList;
 - (UIView *)prefView;

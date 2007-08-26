@@ -64,7 +64,7 @@
 		[self addSubview:serverBar];
 		[self addSubview:channelTable];
 		[self addSubview:messageView];
-		[self addSubview:keyboard];
+		//[self addSubview:keyboard];
 		
 		
 		

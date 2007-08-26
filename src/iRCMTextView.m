@@ -6,8 +6,8 @@
 
 - (void)mouseUp:(struct __GSEvent *)fp8
 {
-	NSLog(@"inside mouseUp");
-	[[[iRCMobileApp sharedInstance] keyboard] showKeyboardForView:[[iRCMobileApp sharedInstance] prefView]];
+	NSLog(@"inside  uitext view mouseUp");
+	[[[iRCMobileApp sharedInstance] keyboard] showKeyboardForView:[[iRCMobileApp sharedInstance] channelView]];
 	
 	[super mouseUp:fp8];
 }
