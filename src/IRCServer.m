@@ -515,6 +515,10 @@
 	[self setPort:[coder decodeIntForKey:@"port"]];
 	[self setNickname:[coder decodeObjectForKey:@"nickname"]];
 	[self setUsername:[coder decodeObjectForKey:@"username"]];
+	_OutgoingData = @"";
+	_InputBuffer = @"";
+	channels = [[NSMutableArray alloc] init];
+	connected = NO;
 	return self;
 }
 

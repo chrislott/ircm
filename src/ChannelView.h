@@ -18,6 +18,7 @@
 #import <UIKit/UIPreferencesTableCell.h>
 #import <UIKit/UIPreferencesTextTableCell.h>
 #import <UIKit/UIKeyboard.h>
+#import <UIKit/UINavigationItem.h>
 #import "IRCServer.h"
 #import "iRCMKeyboard.h"
 #import "iRCMUITable.h"
@@ -29,11 +30,9 @@
 	
 	iRCMUITable *messageTable;
 	UITextView *messageView;
-	
-	//iRCMKeyboard* chanKeyboard;
-	
-	
 	iRCMKeyboard* chanKeyboard;
+	
+	UINavigationItem *chanTitle;
 	
 	UITextLabel *title;
 	UITextView* convoView;

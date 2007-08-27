@@ -17,6 +17,7 @@
 #import <UIKit/UIPreferencesTable.h>
 #import <UIKit/UIPreferencesTableCell.h>
 #import <UIKit/UIPreferencesTextTableCell.h>
+#import <UIKit/UINavigationItem.h>
 
 #import "IRCServer.h"
 
@@ -25,7 +26,7 @@
 	UINavigationBar *serverBar;
 	UITable *channelTable;
 	UITextView *messageView;
-	
+	UINavigationItem *serverTitle;
 	iRCMKeyboard* keyboard;
 }
 

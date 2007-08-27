@@ -10,6 +10,7 @@
 #import "ServerView.h"
 #import <UIKit/UIPreferencesTableCell.h>
 #import <UIKit/UIPreferencesTextTableCell.h>
+#import <UIKit/UINavigationItem.h>
 
 @implementation ServerView
 
@@ -30,6 +31,10 @@
 		[serverBar showLeftButton:@"Back" withStyle:1 rightButton:@"Join Channel" withStyle:0];
 		[serverBar setBarStyle: 2];	
 		[serverBar setDelegate: self];
+		
+		serverTitle = [[UINavigationItem alloc] initWithTitle:@""];
+		[serverBar pushNavigationItem:serverTitle];
+		
 				
 		//setup message table
 		channelTable = [[UITable alloc] initWithFrame:CGRectMake(frame.origin.x, 45.0f, frame.size.width, frame.size.height - 145.0f)];
@@ -82,6 +87,10 @@
 - (void)getLastData
 {
 	NSLog(@"got new data");
+	//NSString *currServDesc =  [[ServerManager sharedServerManager] currentServerDesc];
+
+	//[serverTitle setTitle:	[currServDesc copy]];
+	
 	[messageView setText: [[ [ServerManager sharedServerManager] getLastDataForServer:[ [ServerManager sharedServerManager] currentServer]] copy]];
 	[channelTable reloadData];
 }

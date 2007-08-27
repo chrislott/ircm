@@ -34,14 +34,17 @@
 		
 		//setup nav bar
 		channelBar = [[UINavigationBar alloc] init];
-		[channelBar setFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, 35.0f)];
+		[channelBar setFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, 45.0f)];
 		[channelBar showLeftButton:@"Back" withStyle:1 rightButton:@"Users" withStyle:0];
 		[channelBar setBarStyle: 2];	
 		[channelBar setDelegate: self];
 				
+		chanTitle = [[UINavigationItem alloc] initWithTitle:@"Title"];
+		[channelBar pushNavigationItem:chanTitle];
+
 		//setup message table
 		
-		messageTable = [[iRCMUITable alloc] initWithFrame:CGRectMake(frame.origin.x, 35.0f, frame.size.width, frame.size.height - 180.0f - 105.0f)];
+		messageTable = [[iRCMUITable alloc] initWithFrame:CGRectMake(frame.origin.x, 45.0f, frame.size.width, frame.size.height - 190.0f - 105.0f)];
 		UITableColumn *col = [[UITableColumn alloc] initWithTitle:@"Messages" identifier:@"messages" width:frame.size.width];
 		[messageTable addTableColumn:col];
 		[messageTable setSeparatorStyle:0];
@@ -50,7 +53,7 @@
 		[messageTable reloadData]; 
 		[messageTable setTapDelegate:self];
 		
-				
+		
 		//title = [[UITextLabel alloc] init];
 		//[title setColor:CGColorCreate(colorSpace, whiteComponents)];
 		
@@ -118,8 +121,10 @@
 {
 	
 	NSString *nameForChannel = [[ServerManager sharedServerManager] getCurrentChannelName];
-	[channelBar setPrompt: nameForChannel];
+	//[channelBar setPrompt: nameForChannel];
 	//[channelBar setTitle: nameForChannel];
+
+	[chanTitle setTitle: nameForChannel];
 
 	//[title setText: nameForChannel];
 	//get last message received
