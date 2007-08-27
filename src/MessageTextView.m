@@ -24,6 +24,8 @@
   // exit(1);
   //}
   
+  /*
+  
   NSLog(@"inside shouldDeleteDOMRange");
   
   int newIndex = [[self text] length];
@@ -36,11 +38,11 @@
   } else
   {
 	NSLog(@"error backspacing.. nowhere to backspace");
-  }
+  } */
   
   
   // See if the shell echo'd back what we just wrote
-  return NO;
+  return YES;
 }
 
 
@@ -50,7 +52,7 @@
   NSLog(@"inserting.. %#x", [character characterAtIndex:0]);
   if([character length] != 1) {
     NSLog(@"Unhandled multiple character insert!");
-    return false;  //or just loop through
+    return YES;  //or just loop through
   }
 
   char cmd_char = [character characterAtIndex:0];
