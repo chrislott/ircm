@@ -15,7 +15,7 @@
 #import <UIKit/UITableColumn.h>
 #import <UIKit/UITransitionView.h>
 #import <UIKit/UIView.h>
-
+#import <UIKit/UINavigationItem.h>
 #import "IRCServer.h"
 #import "iRCMobileApp.h"
 #import "ServerPrefsView.h"
@@ -79,6 +79,7 @@ static iRCMobileApp *sharedInstance;
 {
 	[transitionView transition:trans toView:serverView];
 	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMServerHasDataNotification" object:nil];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMChannelDidChangeNotification" object:nil];
 }
 
@@ -263,6 +264,11 @@ static iRCMobileApp *sharedInstance;
 }
 
 
+- (void)applicationWillSuspend
+{
+	[[ServerManager sharedServerManager] writeToFile:filePath];
+}
+
 - (void) applicationDidFinishLaunching: (id) unused
 {
 	sharedInstance = self;
@@ -275,10 +281,21 @@ static iRCMobileApp *sharedInstance;
 	struct CGRect rect = [UIHardware fullScreenApplicationContentRect];
 	rect.origin.x = rect.origin.y = 0.0f;
 	
-   
-	//initialize server manager
-	sm = [[ServerManager alloc] init];
+   dirPath = @"/var/root/Library/iRCM";
+   filePath = @"/var/root/Library/iRCM/servers.mms";
+
+	//Check to see if directory exists
+	if (![[NSFileManager defaultManager] fileExistsAtPath:dirPath])
+	{
+		NSLog(@"had to create directory.");
+		[[NSFileManager defaultManager] createDirectoryAtPath:dirPath attributes:nil];
+	}
 	
+	
+	//initialize server manager
+	//sm = [[ServerManager alloc] init];
+	sm = [[ServerManager alloc] initWithContentsOfFile:filePath];
+
 	
    
 	//initialize nav bar
@@ -287,6 +304,10 @@ static iRCMobileApp *sharedInstance;
     [mainNavBar showLeftButton:@"Edit Server" withStyle:0 rightButton:@"Connect" withStyle:0];
 	[mainNavBar setDelegate:self];
 	[mainNavBar setBarStyle: 2];
+	
+	UINavigationItem *iRCMTitle = [[UINavigationItem alloc] initWithTitle:@"iRCm"];
+	[mainNavBar pushNavigationItem:iRCMTitle];
+
 	
 	//setup background
 	NSString *backgroundPath = [bundle pathForResource:@"Background" ofType:@"png"];

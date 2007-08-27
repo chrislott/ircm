@@ -503,6 +503,8 @@
 	[coder encodeObject:description forKey:@"description"];
 	[coder encodeObject:hostname forKey:@"hostname"];
 	[coder encodeInt:port forKey:@"port"];
+	[coder encodeObject:nickname forKey:@"nickname"];
+	[coder encodeObject:username forKey:@"username"];
 }
 - (id)initWithCoder:(NSCoder *)coder
 {	
@@ -511,7 +513,8 @@
 	[self setDescription:[coder decodeObjectForKey:@"description"]];
 	[self setHostname:[coder decodeObjectForKey:@"hostname"]];
 	[self setPort:[coder decodeIntForKey:@"port"]];
-
+	[self setNickname:[coder decodeObjectForKey:@"nickname"]];
+	[self setUsername:[coder decodeObjectForKey:@"username"]];
 	return self;
 }
 

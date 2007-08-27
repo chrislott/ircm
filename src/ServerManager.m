@@ -84,12 +84,12 @@ static ServerManager *servMgr;
 	servMgr = self;
 	
 	servers = [[NSMutableArray alloc] init];
-	
+			
 	IRCServer *server1 = [[IRCServer alloc] init];
-	IRCServer *server2 = [[IRCServer alloc] init];
-	[server2 setDescription: @"irc.efnet.net"];
+	//IRCServer *server2 = [[IRCServer alloc] init];
+	//[server2 setDescription: @"irc.efnet.net"];
 	[servers addObject: server1];
-	[servers addObject: server2];
+	//[servers addObject: server2]; 
 	
 	currentServer = 0;
 	currentChannel = 0;
@@ -100,27 +100,27 @@ static ServerManager *servMgr;
 {
 	self = [self init];
 	
+	servMgr = self;
+	NSLog(@"checking to see if file exists");
 	//Check to see if a transactions file exists or accounts file
+	
 	if ([[NSFileManager defaultManager] fileExistsAtPath:aFile]) {
-		
+		NSLog(@"the file exists! lets open it");
 		NSMutableArray *temp = [NSKeyedUnarchiver unarchiveObjectWithFile:aFile];
 		
-		[self setServers:temp];
-		
-		/*
-		if ([[temp objectAtIndex:0] class] == [Transaction class])
-		{
-			IRCServer *server = [[IRCServer alloc] init];
-			[account setDescription:@"New Server"];
-			[account setHostname:@"irc.efnet.net"];
-			[account setPort:6667];
-			
-			[self addServer:server];
-		} else if ([[temp objectAtIndex:0] class] == [IRCServer class]) {
+		if ([[temp objectAtIndex:0] class] == [IRCServer class]) {
 			[self setServers:temp];
-		} */
+			NSLog(@"Just set the servers to temp");
+		} 
+		
+		
+	} else
+	{
+		NSLog(@"no file exists.");
 	}
-	
+	currentServer = 0;
+	currentChannel = 0;
+		
 	return self;
 }
 

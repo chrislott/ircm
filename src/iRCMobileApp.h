@@ -26,9 +26,10 @@
 	ChannelView *channelView;
 	ServerManager *sm;
 	
-	
+	NSString *dirPath;
+	NSString *filePath;
 }
-
+- (void)applicationWillSuspend;
 + (iRCMobileApp *)sharedInstance;
 - (void)reloadData;
 - (BOOL)keyboardIsOut;
