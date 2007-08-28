@@ -32,8 +32,9 @@
 		[serverBar setBarStyle: 2];	
 		[serverBar setDelegate: self];
 		
-		serverTitle = [[UINavigationItem alloc] initWithTitle:@""];
+		serverTitle = [[UINavigationItem alloc] initWithTitle:[[[ServerManager sharedServerManager] currentServer]] description];
 		[serverBar pushNavigationItem:serverTitle];
+		[serverTitle release]
 		
 				
 		//setup message table
