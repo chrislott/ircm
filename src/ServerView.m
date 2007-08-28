@@ -28,13 +28,13 @@
 		//setup nav bar
 		serverBar = [[UINavigationBar alloc] init];
 		[serverBar setFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, 45.0f)];
-		[serverBar showLeftButton:@"Back" withStyle:1 rightButton:@"Join Channel" withStyle:0];
+		[serverBar showLeftButton:@"Back" withStyle:1 rightButton:@"Join Chan" withStyle:0];
 		[serverBar setBarStyle: 2];	
 		[serverBar setDelegate: self];
 		
-		serverTitle = [[UINavigationItem alloc] initWithTitle:[[[ServerManager sharedServerManager] currentServer]] description];
+		serverTitle = [[UINavigationItem alloc] initWithTitle:@""];
 		[serverBar pushNavigationItem:serverTitle];
-		[serverTitle release]
+		[serverTitle release];
 		
 				
 		//setup message table
@@ -88,9 +88,9 @@
 - (void)getLastData
 {
 	NSLog(@"got new data");
-	//NSString *currServDesc =  [[ServerManager sharedServerManager] currentServerDesc];
-
-	//[serverTitle setTitle:	[currServDesc copy]];
+	
+	NSString *currServDesc =  [[ServerManager sharedServerManager] currentServerDesc];
+	[serverTitle setTitle:	[currServDesc copy]];
 	
 	[messageView setText: [[ [ServerManager sharedServerManager] getLastDataForServer:[ [ServerManager sharedServerManager] currentServer]] copy]];
 	[channelTable reloadData];
@@ -103,7 +103,7 @@
 		//table??
 		NSLog(@"0 btn pressed");
 		//[[iRCMobileApp sharedInstance] transitionToView: [[iRCMobileApp sharedInstance] getServerList] transition: 2];
-		[[ServerManager sharedServerManager] tryToJoin:@"#iphone-uikit" forServer: [[ServerManager sharedServerManager] currentServer]];
+		[[ServerManager sharedServerManager] tryToJoin:@"#iphone" forServer: [[ServerManager sharedServerManager] currentServer]];
 	}
 	if(button == 1)
 	{

@@ -65,6 +65,10 @@ static ServerManager *servMgr;
 {
 	return [[servers objectAtIndex:currentServer] nickname];
 }
+- (NSString *)currentServerUsername
+{
+	return [[servers objectAtIndex:currentServer] username];
+}
 
 - (BOOL)isServerConnected:(int)aServer
 {

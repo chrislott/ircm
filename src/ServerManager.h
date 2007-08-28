@@ -28,6 +28,7 @@
 - (NSString *)currentServerHostname;
 - (int)currentServerPort;
 - (NSString *)currentServerNick;
+- (NSString *)currentServerUsername;
 
 - (NSString *)descOfServer:(int)aServer;
 - (int)numberOfServers;

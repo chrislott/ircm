@@ -78,7 +78,7 @@
 		
 		textField = [[MessageTextView alloc] initWithFrame:CGRectMake(5.0f,  5.0f, 310.0f, 25.0f)];
 		[textField setTextSize:15.0f];
-		[textField setText: @"Enter your text here."];
+		[textField setText: @""];
 		[textField setBackgroundColor:CGColorCreate(colorSpace, transparentComponents)];
 		
 		[table addSubview:workaround];

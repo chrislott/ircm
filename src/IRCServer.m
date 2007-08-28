@@ -35,6 +35,19 @@
 {
 	if(connected == NO)
 	{
+		//ask them to change their nick first
+		if([nickname compare:@"yourNickHere"] == 0)
+		{
+			UIAlertSheet *sheet = [[UIAlertSheet alloc] initWithFrame: CGRectMake(0, 220, 320, 220)];
+			[sheet setTitle:@"pogi says:"];
+			[sheet setBodyText:@"Please set your nick first."];
+			[sheet addButtonWithTitle:@"OK"];
+			[sheet setDelegate: [iRCMobileApp sharedInstance]];
+			[sheet presentSheetFromAboveView: [[iRCMobileApp sharedInstance] currentView]];		
+			return;
+		}
+			
+	
 		NSLog(@"started to initialize stream");
 		NSHost *host = [NSHost hostWithName:hostname];
 		[NSStream getStreamsToHost:host port:port inputStream:&iStream outputStream:&oStream];
@@ -81,13 +94,13 @@
 			break;
         }
 		case NSStreamEventOpenCompleted:
-			connected = YES;
-            NSLog(@"Output Open Completed");
+			NSLog(@"Output Open Completed");
             break;
         default:
         case NSStreamEventErrorOccurred:
 			connected = NO;
             NSLog(@"An error occurred on the output stream.");
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMServerErrorNotification" object:nil];
             break;
 	}
 }
@@ -99,16 +112,19 @@
             [self readBytes];
             break;
         case NSStreamEventOpenCompleted:
-			connected=YES;
+			
 			NSLog(@"Input Open Completed");
             // Do Something
 			_OutgoingData = [NSString stringWithFormat:@"NICK %@\r\n\r\n", [self nickname]] ;
 			_OutgoingData = [_OutgoingData stringByAppendingString: [NSString stringWithFormat:@"USER %@ 8 * : %@ iPhone\r\n\r\n", [self username], [self username]]];
+			//[[iRCMobileApp sharedInstance] hideProgressHUD];
+			
             break;
         default:
         case NSStreamEventErrorOccurred:
             NSLog(@"An error occurred on the input stream.");
 			connected=NO;
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMServerErrorNotification" object:nil];
             break;
     }
 }
@@ -221,6 +237,13 @@
 		//NSLog(@"item count: %d", spacedItemCount);
 		if(spacedItemCount > 1)
 		{
+			//we're not officially connected to a server until we get a message from it. messages start with ":"
+			if(connected == NO)
+			{
+				connected = YES;
+				
+				[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMServerConnectedNotification" object:NULL];
+			}
 			
 			//---- PING
 			if([spacedItems count] == 2 && [[spacedItems objectAtIndex:0] compare: @"PING"] == 0)

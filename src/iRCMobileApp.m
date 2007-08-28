@@ -21,10 +21,13 @@
 #import "ServerPrefsView.h"
 #import "iRCMKeyboard.h"
 
+//#import "libIRC.h"
+
 NSMutableArray* servers;
 
 BOOL keyboardIsOut;
 
+//IRCClient client;
 	
 static iRCMobileApp *sharedInstance;
 
@@ -38,6 +41,13 @@ static iRCMobileApp *sharedInstance;
 	}
 	
 	return sharedInstance;
+}
+
+
+
+- (void)alertSheet:(UIAlertSheet *)sheet buttonClicked:(int)button 
+{
+	[sheet dismiss];
 }
 
 - (BOOL)keyboardIsOut
@@ -63,22 +73,37 @@ static iRCMobileApp *sharedInstance;
 {
 	return prefView;
 }
+- (UIView *)mainView
+{
+	return mainView;
+}
 
 - (ChannelView *)channelView
 {
 	return channelView;
 }
+
+- (UIWindow *)mainWindow
+{
+	return mainWindow;
+}
+
+- (UIView *)currentView
+{
+	return currentView;
+}
+
 - (void)transitionToChannelViewWithTransition:(int) trans
 {
 	[transitionView transition:trans toView:channelView];
-	
+	currentView = channelView;
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMChannelDidChangeNotification" object:nil];
 }
 
 - (void)transitionToServerViewWithTransition:(int) trans
 {
 	[transitionView transition:trans toView:serverView];
-	
+	currentView = serverView;
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMServerHasDataNotification" object:nil];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMChannelDidChangeNotification" object:nil];
 }
@@ -89,6 +114,7 @@ static iRCMobileApp *sharedInstance;
 	NSLog(@"inside transToMain");
 	[[iRCMobileApp sharedInstance] setKeyboardIsOut: NO];
 	[transitionView transition:trans toView:serverListView];
+	currentView = serverListView;
 	[serverTable reloadData];
 	//[serverTable reloadData];
 	NSLog(@"done transition");
@@ -103,8 +129,21 @@ static iRCMobileApp *sharedInstance;
 			NSLog(@"button 0");
 			//connect!!!
 			//[self createNewServer];
-			[sm tryToConnect: [serverTable selectedRow]];
-			[self showServerView:[serverTable selectedRow]];
+			@try
+			{
+			
+				if([sm isServerConnected:[serverTable selectedRow]] == NO)
+				{
+					//THIS ERRORS
+					//[self showProgressHUD:@"Connecting..." withView:serverListView withRect:CGRectMake(0.0f, 100.0f, 320.0f, 50.0f)];
+					[sm tryToConnect: [serverTable selectedRow]];
+					NSLog(@"done with tryToConnect");
+				}
+				//[self showServerView:[serverTable selectedRow]];
+			}
+			@catch (NSException *e) {
+			}@finally {
+			} 
 		}
 		if(button == 1)
 		{
@@ -212,8 +251,10 @@ static iRCMobileApp *sharedInstance;
 }
 - (void)reloadData
 {
+	NSLog(@"reloading data in serverlistview");
 	[serverTable reloadData];
 }
+
 - (int)numberOfRowsInTable:(UITable *)table
 {
 	return ([sm numberOfServers] + 1);
@@ -221,6 +262,7 @@ static iRCMobileApp *sharedInstance;
 
 - (void)showServerView:(int) serverID
 {
+	NSLog(@"inside showServerView");
 	[sm setCurrentServer: serverID];
 	struct CGRect rect = [UIHardware fullScreenApplicationContentRect];
 	rect.origin.x = rect.origin.y = 0.0f;
@@ -247,6 +289,7 @@ static iRCMobileApp *sharedInstance;
 		
 - (void)createNewServer
 {
+	NSLog(@"inside create new server");
 	IRCServer *newServer = [[IRCServer alloc] init];
 	[newServer setDescription:@""];
 	[newServer setHostname:@""];
@@ -257,12 +300,46 @@ static iRCMobileApp *sharedInstance;
 	[self showServerPrefs:(count - 1)];
 }
 
+- (void)showProgressHUD:(NSString *)label  withView:(UIView *)v withRect:(struct CGRect)rect
+{
+	NSLog(@"inside show hud");
+	progress = [[UIProgressHUD alloc] initWithWindow: mainWindow];
+	[progress setText: label];
+	[progress drawRect: rect];
+	[progress show: YES];
+	
+	[v addSubview:progress];
+}
+
+- (void)hideProgressHUD
+{
+	NSLog(@"inside hide hud");
+	[progress show: NO];
+	[progress removeFromSuperview];
+}
+
+
 - (void)reloadTableData
 {
 	NSLog(@"Got the message to reload table data");
 	[serverTable reloadData];
 }
 
+- (void)serverConnectedNotifier
+{
+	NSLog(@"inside server connected notifier");
+	//[self hideProgressHUD];
+	[self showServerView:[serverTable selectedRow]];
+}
+
+- (void)serverErrorNotifier
+{
+	NSLog(@"inside server error notifier");
+	if([sm isServerConnected:[sm currentServer]] == NO)
+	{
+		[self transitionToServerListWithTransition:2 ];
+	}
+}
 
 - (void)applicationWillSuspend
 {
@@ -341,7 +418,17 @@ static iRCMobileApp *sharedInstance;
 											 selector:@selector(reloadTableData)
 												 name:@"iRCMServersDidChangeNotification"
 											   object:nil];
-
+											   
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(serverConnectedNotifier)
+												 name:@"iRCMServerConnectedNotification"
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(serverConnectedNotifier)
+												 name:@"iRCMServerConnectedNotification"
+											   object:nil];
+											   
+[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMServerErrorNotification" object:nil];
 
 
 	//setup transitionview
@@ -362,6 +449,8 @@ static iRCMobileApp *sharedInstance;
 	
 	
 	[transitionView transition:1 toView:serverListView];
+	
+	currentView = serverListView;
 	
 	mainKeyboard =  [[iRCMKeyboard alloc] initWithFrame:CGRectMake(0.0f, 480.0, 320.0f, 480.0f)];
 	//[mainKeyboard setTapDelegate:this];

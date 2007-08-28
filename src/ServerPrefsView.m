@@ -9,6 +9,7 @@
 #import "iRCMobileApp.h"
 #import "ServerManager.h"
 #import "ServerPrefTable.h"
+#import "iRCMTextTableCell.h"
 #import <UIKit/UIPreferencesTableCell.h>
 #import <UIKit/UIPreferencesTextTableCell.h>
 
@@ -38,17 +39,94 @@
 		int currentServer = [sm currentServer];
 		NSLog(@"saving server.");
 		
-		[sm setDescription: [nameField text] forServer:currentServer];
-		[sm setHostname: [hostField text] forServer:currentServer];
-		[sm setPort: [[portField text] intValue] forServer:currentServer];
+		[sm setDescription: [[table cellAtRow:1 column:0] value] forServer:currentServer];
+		[sm setHostname: [[table cellAtRow:2 column:0] value] forServer:currentServer];
+		[sm setPort: [[[table cellAtRow:3 column:0] value] intValue] forServer:currentServer];
 		
-		NSLog(@"Saving nickname: %@", [NSString stringWithFormat:@"%@", [nickField text]]);
+		//[sm setDescription: [nameField text] forServer:currentServer];
+		//[sm setHostname: [hostField text] forServer:currentServer];
+		//[sm setPort: [[portField text] intValue] forServer:currentServer];
 		
-		[sm setNickname: [nickField text] forServer:currentServer];
+		NSLog(@"Saving nickname: %@", [NSString stringWithFormat:@"%@", [[table cellAtRow:3 column:0] value]]);
+		
+		[sm setNickname: [[table cellAtRow:4 column:0] value]  forServer:currentServer];
 		
 		[[iRCMobileApp sharedInstance] transitionToServerListWithTransition:2];
 	}
 }
+
+
+#pragma mark ----------Datasource Methods-----------
+
+- (int)numberOfGroupsInPreferencesTable:(UIPreferencesTable *)table
+{
+	return 1;
+}
+
+- (int)preferencesTable:(UIPreferencesTable *)table numberOfRowsInGroup:(int)group
+{
+	return 5;
+}
+
+- (UIPreferencesTableCell *)preferencesTable:(UIPreferencesTable *)table cellForGroup:(int)group
+{
+	UIPreferencesTableCell *cell = [[UIPreferencesTableCell alloc] init];
+	
+	return [cell autorelease];
+}
+
+- (UIPreferencesTableCell *)preferencesTable:(UIPreferencesTable *)table cellForRow:(int)row inGroup:(int)group
+{
+	UIPreferencesTextTableCell *cell;
+	ServerManager *sm = [ServerManager sharedServerManager];
+	
+	if (row == 0)
+	{
+		cell = [[UIPreferencesTextTableCell alloc] init];
+		//NSLog(@"%@", [UITextField defaultEditingDelegate]);
+		//[[cell textField] setDelegate:self];
+		[cell setTitle:@"Server Name"];
+		[cell setValue: [sm currentServerDesc]];
+		[cell setShowDisclosure:NO];
+		//cell = descriptionCell;
+	} else if (row == 1)
+	{
+		cell = [[UIPreferencesTextTableCell alloc] init];
+		//NSLog(@"%@", [UITextField defaultEditingDelegate]);
+		//[[cell textField] setDelegate:self];
+		[cell setTitle:@"Host Name"];
+		[cell setValue: [sm currentServerHostname]];
+		[cell setShowDisclosure:NO];
+		//cell = descriptionCell;
+	} else if (row == 2) {
+		cell = [[iRCMTextTableCell alloc] init];
+		//[[cell textField] poseAsClass:[UITextField class]];
+		[cell setTitle:@"Port"];
+		
+		[cell setValue:[NSString stringWithFormat:@"%i", [sm currentServerPort]]];
+		[cell setShowDisclosure:NO];
+		//cell = amountCell;
+	} else if (row == 3)
+	{
+		cell = [[UIPreferencesTextTableCell alloc] init];
+		//NSLog(@"%@", [UITextField defaultEditingDelegate]);
+		//[[cell textField] setDelegate:self];
+		[cell setTitle:@"Nick Name"];
+		[cell setValue: [sm currentServerNick]];
+		[cell setShowDisclosure:NO];
+		//cell = descriptionCell;
+	} else {
+		cell = [[UIPreferencesTableCell alloc] init];
+		[cell setTitle:@"User Name"];
+		[cell setValue: [sm currentServerUsername]];
+		[cell setShowDisclosure:NO];
+		//cell = typeCell;
+	}
+	
+	return [cell autorelease];
+}
+
+
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -58,12 +136,7 @@
 		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
 		float whiteComponents[4] = {1, 1, 1, 1};
 		float transparentComponents[4] = {0, 0, 0, 0};
-		
-		//get current server information		
-		ServerManager *sm = [ServerManager sharedServerManager];
-
-			
-		
+				
 		//setup nav bar
 		serverPrefBar = [[UINavigationBar alloc] init];
 		[serverPrefBar setFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, 45.0f)];
@@ -73,6 +146,7 @@
 				
 				
 		//setup ui components
+		/*
 		UITextLabel *nameTitle = [[UITextLabel alloc] initWithFrame:CGRectMake(5.0f, 5.0f, 200.0f, 20.0f)];
 		[nameTitle setText:@"Server Name: "];
 		[nameTitle setBackgroundColor:CGColorCreate(colorSpace, transparentComponents)];
@@ -81,8 +155,6 @@
 			
 		[nameField setText: [sm currentServerDesc]];
 	
-	
-		
 		UITextLabel *hostTitle = [[UITextLabel alloc] initWithFrame:CGRectMake(5.0f, 80.0f, 200.0f, 20.0f)];
 		[hostTitle setText:@"Hostname: "];
 		[hostTitle setBackgroundColor:CGColorCreate(colorSpace, transparentComponents)];
@@ -104,6 +176,8 @@
 		[nickField setTextSize:18.0f];
 		[nickField setText: [sm currentServerNick]];
 		
+		
+		*/
 		/*
 		typeSelection = [[UISegmentedControl alloc] initWithFrame:CGRectMake(75.0f, 180.0f, 170.0f, 50.0f)];
 		[typeSelection insertSegment:0 withTitle:@"Debit" animated:NO];
@@ -117,7 +191,12 @@
 		[dateButton addSubview:dateLabel]; */
 		
 		
-		ServerPrefTable *table = [[ServerPrefTable alloc] initWithFrame:CGRectMake(0.0f, 45.0f, 320.0f, 480.0f)];
+		table = [[UIPreferencesTable alloc] initWithFrame:CGRectMake(0.0f, 45.0f, 320.0f, 415.0f)];
+		[table setDataSource:self];
+		[table setDelegate:self];
+		[table reloadData];
+
+		/*
 		[table addSubview:nameTitle];
 		[table addSubview:nameField];
 		[table addSubview:hostTitle];
@@ -126,6 +205,7 @@
 		[table addSubview:portField];
 		[table addSubview:nickTitle];
 		[table addSubview:nickField];
+		*/
 
 		//[table addSubview:dateButton];
 		
@@ -133,23 +213,27 @@
 		//keyboardIsOut = false;
 		
 		//get keyboard
+		/*
 		prefKeyboard = [[iRCMobileApp sharedInstance] keyboard];
 		
 		if (!prefKeyboard)  
 		{
 			NSLog(@"have to make new keyboard??");
 		}
-		[[iRCMobileApp sharedInstance] setKeyboardIsOut: NO];
+		[[iRCMobileApp sharedInstance] setKeyboardIsOut: NO];*/
 		
 		[self setBackgroundColor:CGColorCreate(colorSpace, whiteComponents)];
 		
 		[self addSubview:serverPrefBar];
 		[self addSubview:table];
-		[self addSubview:prefKeyboard];
+		//[self addSubview:prefKeyboard];
 		
     }
     return self;
 }
+
+
+
 
 - (void)drawRect:(CGRect)rect {
     // Drawing code here.
@@ -161,5 +245,41 @@
 	[ super dealloc ];
 }
 
+
+@end
+
+
+@implementation iRCMTextTableCell
+
+- (void)_textFieldStartEditing:(id)fp8
+{
+	NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.01
+													  target:self
+													selector:@selector(showKeyboardWithStyle:)
+													userInfo:[NSArray arrayWithObject:[NSNumber numberWithInt:1]]
+													 repeats:NO];
+	
+	[super _textFieldStartEditing:fp8];
+}
+
+- (void)_textFieldEndEditing:(id)fp8
+{
+	NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.01
+													  target:self
+													selector:@selector(showKeyboardWithStyle:)
+													userInfo:[NSArray arrayWithObject:[NSNumber numberWithInt:0]]
+													 repeats:NO];
+	
+	[super _textFieldEndEditing:fp8];
+}
+
+- (void)showKeyboardWithStyle:(NSTimer *)aTimer
+{
+	int style = [[[aTimer userInfo] objectAtIndex:0] intValue];
+	
+	UIKeyboard *keyboard = [UIKeyboard activeKeyboard];
+	[keyboard setPreferredKeyboardType:style];
+	[keyboard showPreferredLayout];
+}
 
 @end
