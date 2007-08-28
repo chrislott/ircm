@@ -80,6 +80,32 @@
 		{
 			[[ServerManager sharedServerManager] sendRawMessage:[[self text] substringFromIndex:4] forServer: [[ServerManager sharedServerManager] currentServer]];
 		}
+		else if([[spacedItems objectAtIndex:0] compare: @"/msg"] == 0)
+		{
+			
+			//[[ServerManager sharedServerManager] sendPM:[[self text] substringFromIndex:4] forServer: [[ServerManager sharedServerManager] currentServer]];
+		}
+		else if([[spacedItems objectAtIndex:0] compare: @"/topic"] == 0)
+		{
+			NSMutableString *topic = [[NSMutableString alloc] initWithString:@""];
+			int i;
+			
+			for (i=1; i< [spacedItems count]; i++) {
+				topic = [topic stringByAppendingString:[spacedItems objectAtIndex:i]];
+				topic = [topic stringByAppendingString:@" "];
+			}
+			
+			NSLog(@"%i", [[[ServerManager sharedServerManager] currentServer] currentChannel]);
+			NSString *currentChan = [[ServerManager sharedServerManager] getCurrentChannelName];
+			NSLog(@"currentChannel : %@", currentChan);
+			
+			NSString *cmd = [NSString stringWithFormat: @"TOPIC %@ :%@", currentChan, topic];
+			NSLog(@"************** %@", cmd);
+			
+			[[ServerManager sharedServerManager] sendRawMessage:cmd forServer: [[ServerManager sharedServerManager] currentServer]];
+			//[currentChan release];
+			//[topic release];
+		}
 		else
 		{
 			[[[iRCMobileApp sharedInstance] channelView] sendMessage: [[self text] copy] ];

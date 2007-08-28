@@ -428,9 +428,15 @@
 	NSLog(@"%i", currentChannel);
 	NSString *currentChan = [[channels objectAtIndex: currentChannel] name];
 	NSLog(@"currentChannel : %@", currentChan);
-	[self sendMessage:[NSString stringWithFormat:@"PRIVMSG %@ :%@\r\n\r\n", currentChan, message]];
-	//make it show up in the channel window
+	[self sendPM: currentChan withMessage: message];
 	[[channels objectAtIndex:currentChannel] newMessage: message from:nickname];
+}
+
+- (void)sendPM:(NSString *)object withMessage:(NSString *)message
+{
+	[self sendMessage:[NSString stringWithFormat:@"PRIVMSG %@ :%@\r\n\r\n", object, message]];
+	//make it show up in the channel window
+	//[[channels objectAtIndex:object] newMessage: message from:nickname];
 }
 
 - (void)addNewChannel:(Channel *)newChannel
