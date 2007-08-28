@@ -198,12 +198,43 @@ static ServerManager *servMgr;
 	[[servers objectAtIndex:aServer] setHostname:aHostname];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMServersDidChangeNotification" object:self];
 }
+
 - (void)setNickname:(NSString *)aNick forServer:(int)aServer
 {
 	[[servers objectAtIndex:aServer] setNickname:aNick];
 	if([[servers objectAtIndex:aServer] isConnected] == YES)
 	{
 		NSString *compiledMsg = [NSString stringWithFormat:@"NICK %@\r\n\r\n", aNick];
+		[[servers objectAtIndex:aServer] sendMessage:compiledMsg];
+	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMServersDidChangeNotification" object:self];
+}
+
+- (void)setCurrentChannelModeString:(NSString *)aModeStr forServer:(int)aServer
+{
+	if([[servers objectAtIndex:aServer] isConnected] == YES)
+	{
+		NSString *compiledMsg = [NSString stringWithFormat:@"MODE %@ %@\r\n\r\n", [[servers objectAtIndex:aServer] getCurrentChannelName], aModeStr];
+		[[servers objectAtIndex:aServer] sendMessage:compiledMsg];
+	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMServersDidChangeNotification" object:self];
+}
+
+- (void)setCurrentChannelTopic:(NSString *)aTopic forServer:(int)aServer
+{
+	if([[servers objectAtIndex:aServer] isConnected] == YES)
+	{
+		NSString *compiledMsg = [NSString stringWithFormat:@"TOPIC %@ :%@\r\n\r\n", [[servers objectAtIndex:aServer] getCurrentChannelName], aTopic];
+		[[servers objectAtIndex:aServer] sendMessage:compiledMsg];
+	}
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMServersDidChangeNotification" object:self];
+}
+
+- (void)kickUserFromCurrentChannel:(NSString *)aUser withReason:(NSString *)aReason forServer:(int)aServer
+{
+	if([[servers objectAtIndex:aServer] isConnected] == YES)
+	{
+		NSString *compiledMsg = [NSString stringWithFormat:@"KICK %@ %@ :%@\r\n\r\n", [[servers objectAtIndex:aServer] getCurrentChannelName], aUser, aReason];
 		[[servers objectAtIndex:aServer] sendMessage:compiledMsg];
 	}
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMServersDidChangeNotification" object:self];

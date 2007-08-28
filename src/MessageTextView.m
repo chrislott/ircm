@@ -68,24 +68,24 @@
 	//NSLog(@"item count: %d", spacedItemCount);
 	if(spacedItemCount > 0)
 	{
-		if([[spacedItems objectAtIndex:0] compare: @"/join"] == 0)
+		if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/join"] == 0)
 		{
 			[[ServerManager sharedServerManager] tryToJoin: [spacedItems objectAtIndex:1] forServer: [[ServerManager sharedServerManager] currentServer]];
 		} 
-		else if([[spacedItems objectAtIndex:0] compare: @"/nick"] == 0)
+		else if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/nick"] == 0)
 		{
 			[[ServerManager sharedServerManager] setNickname: [spacedItems objectAtIndex:1] forServer: [[ServerManager sharedServerManager] currentServer]];
 		}
-		else if([[spacedItems objectAtIndex:0] compare: @"/raw"] == 0)
+		else if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/raw"] == 0)
 		{
 			[[ServerManager sharedServerManager] sendRawMessage:[[self text] substringFromIndex:4] forServer: [[ServerManager sharedServerManager] currentServer]];
 		}
-		else if([[spacedItems objectAtIndex:0] compare: @"/msg"] == 0)
+		else if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/msg"] == 0)
 		{
 			
 			//[[ServerManager sharedServerManager] sendPM:[[self text] substringFromIndex:4] forServer: [[ServerManager sharedServerManager] currentServer]];
 		}
-		else if([[spacedItems objectAtIndex:0] compare: @"/topic"] == 0)
+		else if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/topic"] == 0)
 		{
 			NSMutableString *topic = [[NSMutableString alloc] initWithString:@""];
 			int i;
@@ -94,18 +94,90 @@
 				topic = [topic stringByAppendingString:[spacedItems objectAtIndex:i]];
 				topic = [topic stringByAppendingString:@" "];
 			}
-			
-			NSLog(@"%i", [[[ServerManager sharedServerManager] currentServer] currentChannel]);
-			NSString *currentChan = [[ServerManager sharedServerManager] getCurrentChannelName];
-			NSLog(@"currentChannel : %@", currentChan);
-			
-			NSString *cmd = [NSString stringWithFormat: @"TOPIC %@ :%@", currentChan, topic];
-			NSLog(@"************** %@", cmd);
-			
-			[[ServerManager sharedServerManager] sendRawMessage:cmd forServer: [[ServerManager sharedServerManager] currentServer]];
-			//[currentChan release];
-			//[topic release];
+            
+			[[ServerManager sharedServerManager] setCurrentChannelTopic:topic forServer: [[ServerManager sharedServerManager] currentServer]];
+			[topic autorelease];
 		}
+        else if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/mode"] == 0)
+		{
+            NSMutableString *modestr = [[NSMutableString alloc] initWithString:@""];
+			int i;
+			
+			for (i=1; i< [spacedItems count]; i++) {
+				modestr = [modestr stringByAppendingString:[spacedItems objectAtIndex:i]];
+				modestr = [modestr stringByAppendingString:@" "];
+			}
+			
+			[[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
+			[modestr autorelease];
+        }
+        else if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/op"] == 0)
+		{
+            NSMutableString *modestr = [[NSMutableString alloc] initWithString:@""];
+			int i;
+			
+			if ( [spacedItems count] > 1 ) {
+                modestr = [modestr stringByAppendingString:@"+o "];
+                modestr = [modestr stringByAppendingString:[spacedItems objectAtIndex:1]];
+        
+                [[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
+                [modestr autorelease];
+            }
+        }
+        else if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/deop"] == 0)
+		{
+            NSMutableString *modestr = [[NSMutableString alloc] initWithString:@""];
+			int i;
+			
+			if ( [spacedItems count] > 1 ) {
+                modestr = [modestr stringByAppendingString:@"-o "];
+                modestr = [modestr stringByAppendingString:[spacedItems objectAtIndex:1]];
+        
+                [[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
+                [modestr autorelease];
+            }
+        }
+        else if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/voice"] == 0)
+		{
+            NSMutableString *modestr = [[NSMutableString alloc] initWithString:@""];
+			int i;
+			
+			if ( [spacedItems count] > 1 ) {
+                modestr = [modestr stringByAppendingString:@"+v "];
+                modestr = [modestr stringByAppendingString:[spacedItems objectAtIndex:1]];
+        
+                [[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
+                [modestr autorelease];
+            }
+        }
+        else if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/devoice"] == 0)
+		{
+            NSMutableString *modestr = [[NSMutableString alloc] initWithString:@""];
+			int i;
+			
+			if ( [spacedItems count] > 1 ) {
+                modestr = [modestr stringByAppendingString:@"-v "];
+                modestr = [modestr stringByAppendingString:[spacedItems objectAtIndex:1]];
+        
+                [[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
+                [modestr autorelease];
+            }
+        }
+        else if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/kick" == 0)
+		{
+            NSMutableString *reason = [[NSMutableString alloc] initWithString:@""];
+			int i;
+			
+            if ( [spacedItems count] > 3 ) {
+                for (i=2; i< [spacedItems count]; i++) {
+                    reason = [reason stringByAppendingString:[spacedItems objectAtIndex:i]];
+                    reason = [reason stringByAppendingString:@" "];
+                }
+            
+                [[ServerManager sharedServerManager] kickUserFromCurrentChannel:[spacedItems objectAtIndex:1] withReason:reason forServer: [[ServerManager sharedServerManager] currentServer]];
+                [reason autorelease];
+            }
+        }
 		else
 		{
 			[[[iRCMobileApp sharedInstance] channelView] sendMessage: [[self text] copy] ];

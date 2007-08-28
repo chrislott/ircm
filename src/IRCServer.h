@@ -62,6 +62,9 @@
 
 //channel shit
 - (void)joinChannel:(NSString *)channelToJoin;
+- (void)kickUserFromCurrentChannel:(NSString *)aUser withReason:(NSString *)aReason forServer:(int)aServer;
+- (void)setCurrentChannelModeString:(NSString *)aModeStr forServer:(int)aServer;
+- (void)setCurrentChannelTopic:(NSString *)aTopic forServer:(int)aServer;
 - (void)addNewChannel:(Channel *)newChannel;
 - (int)currentChannel;
 - (void)setCurrentChannel:(int)aChannel;
