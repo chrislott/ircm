@@ -136,6 +136,18 @@ static iRCMobileApp *sharedInstance;
 				{
 					//THIS ERRORS
 					//[self showProgressHUD:@"Connecting..." withView:serverListView withRect:CGRectMake(0.0f, 100.0f, 320.0f, 50.0f)];
+					
+					//tried a sheet..still broke
+					/*
+					connectingSheet = [[UIAlertSheet alloc] initWithFrame: CGRectMake(0, 220, 320, 220)];
+					[connectingSheet setTitle:@"iRC Mobile"];
+					[connectingSheet setBodyText:@"Connecting..."];
+					[connectingSheet setDelegate: [iRCMobileApp sharedInstance]];
+					[connectingSheet presentSheetFromAboveView: [[iRCMobileApp sharedInstance] currentView]];		*/
+					
+					//try to force it to draw the hud
+					//[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
+					
 					[sm tryToConnect: [serverTable selectedRow]];
 					NSLog(@"done with tryToConnect");
 				}
@@ -314,8 +326,8 @@ static iRCMobileApp *sharedInstance;
 - (void)hideProgressHUD
 {
 	NSLog(@"inside hide hud");
-	[progress show: NO];
-	[progress removeFromSuperview];
+	//[progress show: NO];
+	//[progress removeFromSuperview];
 }
 
 
@@ -328,7 +340,13 @@ static iRCMobileApp *sharedInstance;
 - (void)serverConnectedNotifier
 {
 	NSLog(@"inside server connected notifier");
+	
+	//try to force it to draw the hud
+	//[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
+	
 	//[self hideProgressHUD];
+	//[connectingSheet dismiss];
+	
 	[self showServerView:[serverTable selectedRow]];
 }
 

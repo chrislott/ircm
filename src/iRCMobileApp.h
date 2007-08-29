@@ -31,7 +31,8 @@
 	ServerManager *sm;
 	
 	UIView *currentView;
-	
+	UIAlertSheet *connectingSheet; 
+		
 	NSString *dirPath;
 	NSString *filePath;
 }
