@@ -218,7 +218,9 @@ static ServerManager *servMgr;
 {
 	if([[servers objectAtIndex:aServer] isConnected] == YES)
 	{
-		NSString *compiledMsg = [NSString stringWithFormat:@"MODE %@ %@\r\n\r\n", [[servers objectAtIndex:aServer] getCurrentChannelName], aModeStr];
+		NSLog(@"this is it *** %@", [self getCurrentChannelName]);
+		
+		NSString *compiledMsg = [NSString stringWithFormat:@"MODE %@ %@\r\n\r\n", [self getCurrentChannelName], aModeStr];
 		[[servers objectAtIndex:aServer] sendMessage:compiledMsg];
 	}
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMServersDidChangeNotification" object:self];
@@ -228,7 +230,7 @@ static ServerManager *servMgr;
 {
 	if([[servers objectAtIndex:aServer] isConnected] == YES)
 	{
-		NSString *compiledMsg = [NSString stringWithFormat:@"TOPIC %@ :%@\r\n\r\n", [[servers objectAtIndex:aServer] getCurrentChannelName], aTopic];
+		NSString *compiledMsg = [NSString stringWithFormat:@"TOPIC %@ :%@\r\n\r\n", [self getCurrentChannelName], aTopic];
 		[[servers objectAtIndex:aServer] sendMessage:compiledMsg];
 	}
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMServersDidChangeNotification" object:self];
@@ -238,7 +240,8 @@ static ServerManager *servMgr;
 {
 	if([[servers objectAtIndex:aServer] isConnected] == YES)
 	{
-		NSString *compiledMsg = [NSString stringWithFormat:@"KICK %@ %@ :%@\r\n\r\n", [[servers objectAtIndex:aServer] getCurrentChannelName], aUser, aReason];
+
+		NSString *compiledMsg = [NSString stringWithFormat:@"KICK %@ %@ :%@\r\n\r\n", [self getCurrentChannelName], aUser, aReason];
 		[[servers objectAtIndex:aServer] sendMessage:compiledMsg];
 	}
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"iRCMServersDidChangeNotification" object:self];

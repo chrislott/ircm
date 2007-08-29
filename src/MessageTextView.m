@@ -68,7 +68,7 @@
 	//NSLog(@"item count: %d", spacedItemCount);
 	if(spacedItemCount > 0)
 	{
-		if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/join"] == 0)
+		if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/join"] == 0 || [[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/j"] == 0)
 		{
 			[[ServerManager sharedServerManager] tryToJoin: [spacedItems objectAtIndex:1] forServer: [[ServerManager sharedServerManager] currentServer]];
 		} 
@@ -96,7 +96,7 @@
 			}
             
 			[[ServerManager sharedServerManager] setCurrentChannelTopic:topic forServer: [[ServerManager sharedServerManager] currentServer]];
-			[topic autorelease];
+			//[topic autorelease];
 		}
         else if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/mode"] == 0)
 		{
@@ -109,7 +109,7 @@
 			}
 			
 			[[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
-			[modestr autorelease];
+			//[modestr autorelease];
         }
         else if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/op"] == 0)
 		{
@@ -120,7 +120,7 @@
                 modestr = [modestr stringByAppendingString:[spacedItems objectAtIndex:1]];
         
                 [[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
-                [modestr autorelease];
+                //[modestr autorelease];
             }
         }
         else if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/deop"] == 0)
@@ -132,7 +132,7 @@
                 modestr = [modestr stringByAppendingString:[spacedItems objectAtIndex:1]];
         
                 [[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
-                [modestr autorelease];
+                //[modestr autorelease];
             }
         }
         else if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/voice"] == 0)
@@ -144,7 +144,7 @@
                 modestr = [modestr stringByAppendingString:[spacedItems objectAtIndex:1]];
         
                 [[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
-                [modestr autorelease];
+                //[modestr autorelease];
             }
         }
         else if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/devoice"] == 0)
@@ -156,7 +156,7 @@
                 modestr = [modestr stringByAppendingString:[spacedItems objectAtIndex:1]];
         
                 [[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
-                [modestr autorelease];
+                //[modestr autorelease];
             }
         }
         else if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/kick"] == 0)
@@ -171,7 +171,7 @@
                 }
             
                 [[ServerManager sharedServerManager] kickUserFromCurrentChannel:[spacedItems objectAtIndex:1] withReason:reason forServer: [[ServerManager sharedServerManager] currentServer]];
-                [reason autorelease];
+                //[reason autorelease];
             }
         }
 		else

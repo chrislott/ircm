@@ -21,7 +21,7 @@
 	[self setDescription:@"OSX86 Server"];
 	[self setHostname:@"irc.osx86.hu"];
 	[self setNickname:@"yourNickHere"];
-	[self setUsername:@"iRCm"];
+	[self setUsername:@"ircm"];
 	[self setPort:6667];
 	_OutgoingData = @"";
 	_InputBuffer = @"";
