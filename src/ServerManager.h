@@ -53,6 +53,9 @@
 - (NSString *)getCurrentChannelName;
 - (void)sendCurrentChannelPM:(NSString *)message;
 - (void)sendRawMessage:(NSString *)message forServer:(int)aServer;
+- (void)setCurrentChannelModeString:(NSString *)aModeStr forServer:(int)aServer;
+- (void)setCurrentChannelTopic:(NSString *)aTopic forServer:(int)aServer;
+- (void)kickUserFromCurrentChannel:(NSString *)aUser withReason:(NSString *)aReason forServer:(int)aServer;
 
 - (NSString *)getLastDataForServer:(int)aServer;
 - (NSString *)getDescriptionForServer:(int)aServer;
