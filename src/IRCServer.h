@@ -26,10 +26,15 @@
 	NSString *LastDataReceived;
 	NSMutableArray *channels;
 	int currentChannel;
+	
+	id mainApp;
 }
 
 
 - (id)init;
+
+- (id)mainApp;
+- (void)setMainApp:(id)app;
 
 - (void)connect;
 - (void)disconnect;
@@ -62,9 +67,6 @@
 
 //channel shit
 - (void)joinChannel:(NSString *)channelToJoin;
-- (void)kickUserFromCurrentChannel:(NSString *)aUser withReason:(NSString *)aReason forServer:(int)aServer;
-- (void)setCurrentChannelModeString:(NSString *)aModeStr forServer:(int)aServer;
-- (void)setCurrentChannelTopic:(NSString *)aTopic forServer:(int)aServer;
 - (void)addNewChannel:(Channel *)newChannel;
 - (int)currentChannel;
 - (void)setCurrentChannel:(int)aChannel;

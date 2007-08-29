@@ -142,8 +142,10 @@ static iRCMobileApp *sharedInstance;
 					connectingSheet = [[UIAlertSheet alloc] initWithFrame: CGRectMake(0, 220, 320, 220)];
 					[connectingSheet setTitle:@"iRC Mobile"];
 					[connectingSheet setBodyText:@"Connecting..."];
-					[connectingSheet setDelegate: [iRCMobileApp sharedInstance]];
-					[connectingSheet presentSheetFromAboveView: [[iRCMobileApp sharedInstance] currentView]];		*/
+					[connectingSheet setDelegate: self];
+					[connectingSheet presentSheetFromAboveView: transitionView];		
+					*/
+					
 					
 					//try to force it to draw the hud
 					//[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
@@ -345,8 +347,11 @@ static iRCMobileApp *sharedInstance;
 	//[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
 	
 	//[self hideProgressHUD];
-	//[connectingSheet dismiss];
 	
+	//	
+	//try to force it to draw the hud
+	//[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
+					
 	[self showServerView:[serverTable selectedRow]];
 }
 

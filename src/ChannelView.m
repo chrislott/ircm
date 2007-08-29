@@ -73,7 +73,7 @@
 		[self addSubview:_msgBar];			
 		*/
 
-		ServerPrefTable *table = [[ServerPrefTable alloc] initWithFrame:CGRectMake(0.0f,  frame.size.height - 250.0f, 320.0f, 40.0f)];
+		ServerPrefTable *table = [[ServerPrefTable alloc] initWithFrame:CGRectMake(0.0f,  frame.size.height - 255.0f, 320.0f, 40.0f)];
 		
 		
 		textField = [[MessageTextView alloc] initWithFrame:CGRectMake(5.0f,  5.0f, 310.0f, 25.0f)];
@@ -83,6 +83,9 @@
 		
 		[table addSubview:workaround];
 		[table addSubview: textField];
+		//i tried to add something below the text field to push the autocompletion thing up above the field instead of below, but it didnt owrk. :/
+		//[table addSubview: [[UITextLabel alloc] initWithFrame:CGRectMake(5.0f,  30.0f, 310.0f, 25.0f)]];
+
 		
 		//get keyboard
 		//chanKeyboard = [[iRCMobileApp sharedInstance] keyboard];

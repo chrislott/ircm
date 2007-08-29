@@ -29,6 +29,14 @@
 	connected = NO;
 	return self;
 }
+- (id)mainApp
+{
+	return mainApp;
+}
+- (void)setMainApp:(id)app
+{
+	mainApp = app;
+}
 
 //connect with socket
 - (void)connect
@@ -117,7 +125,6 @@
             // Do Something
 			_OutgoingData = [NSString stringWithFormat:@"NICK %@\r\n\r\n", [self nickname]] ;
 			_OutgoingData = [_OutgoingData stringByAppendingString: [NSString stringWithFormat:@"USER %@ 8 * : %@ iPhone\r\n\r\n", [self username], [self username]]];
-			//[[iRCMobileApp sharedInstance] hideProgressHUD];
 			
             break;
         default:

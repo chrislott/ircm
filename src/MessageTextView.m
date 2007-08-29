@@ -95,7 +95,7 @@
 				topic = [topic stringByAppendingString:@" "];
 			}
             
-			//[[ServerManager sharedServerManager] setCurrentChannelTopic:topic forServer: [[ServerManager sharedServerManager] currentServer]];
+			[[ServerManager sharedServerManager] setCurrentChannelTopic:topic forServer: [[ServerManager sharedServerManager] currentServer]];
 			[topic autorelease];
 		}
         else if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/mode"] == 0)
@@ -108,7 +108,7 @@
 				modestr = [modestr stringByAppendingString:@" "];
 			}
 			
-			//[[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
+			[[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
 			[modestr autorelease];
         }
         else if([[spacedItems objectAtIndex:0] caseInsensitiveCompare: @"/op"] == 0)
@@ -119,7 +119,7 @@
                 modestr = [modestr stringByAppendingString:@"+o "];
                 modestr = [modestr stringByAppendingString:[spacedItems objectAtIndex:1]];
         
-                //[[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
+                [[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
                 [modestr autorelease];
             }
         }
@@ -131,7 +131,7 @@
                 modestr = [modestr stringByAppendingString:@"-o "];
                 modestr = [modestr stringByAppendingString:[spacedItems objectAtIndex:1]];
         
-                //[[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
+                [[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
                 [modestr autorelease];
             }
         }
@@ -143,7 +143,7 @@
                 modestr = [modestr stringByAppendingString:@"+v "];
                 modestr = [modestr stringByAppendingString:[spacedItems objectAtIndex:1]];
         
-                //[[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
+                [[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
                 [modestr autorelease];
             }
         }
@@ -155,7 +155,7 @@
                 modestr = [modestr stringByAppendingString:@"-v "];
                 modestr = [modestr stringByAppendingString:[spacedItems objectAtIndex:1]];
         
-                //[[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
+                [[ServerManager sharedServerManager] setCurrentChannelModeString:modestr forServer: [[ServerManager sharedServerManager] currentServer]];
                 [modestr autorelease];
             }
         }
@@ -170,7 +170,7 @@
                     reason = [reason stringByAppendingString:@" "];
                 }
             
-                //[[ServerManager sharedServerManager] kickUserFromCurrentChannel:[spacedItems objectAtIndex:1] withReason:reason forServer: [[ServerManager sharedServerManager] currentServer]];
+                [[ServerManager sharedServerManager] kickUserFromCurrentChannel:[spacedItems objectAtIndex:1] withReason:reason forServer: [[ServerManager sharedServerManager] currentServer]];
                 [reason autorelease];
             }
         }

@@ -43,7 +43,6 @@
 - (void)dealloc;
 - (void)drawRect:(CGRect)frame;
 
-- (void)reloadTableData;
 
 //Delegate Methods
 - (void)navigationBar:(UINavigationBar*)bar buttonClicked:(int)button;
